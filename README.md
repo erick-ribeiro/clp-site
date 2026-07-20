@@ -44,7 +44,7 @@ window.CLP_CONFIG = {
 };
 ```
 
-Meta OG / Twitter usam `https://clp.erickribeiro.me/` como URL canônica.
+Meta OG / Twitter usam `https://clp.erick.page/` como URL canônica.
 
 ## Incluir o DMG
 
@@ -105,7 +105,7 @@ Se o site ficar em `https://user.github.io/clp-site/`, troque paths absolutos (`
 ```nginx
 server {
   listen 443 ssl http2;
-  server_name clp.erickribeiro.me;
+  server_name clp.erick.page;
   root /var/www/clp-site;
   index index.html;
 
@@ -123,7 +123,7 @@ server {
 
 - [ ] DMG em `downloads/Clp-0.1.0.dmg`
 - [ ] `CLP_CONFIG.downloadUrl` e `version` corretos
-- [x] URLs canônicas / OG em `clp.erickribeiro.me`
+- [x] URLs canônicas / OG em `clp.erick.page`
 - [ ] Favicon e `og-image.png` acessíveis publicamente
 - [ ] Teste mobile + desktop (glass e CTAs)
 - [ ] Teste do fluxo “Abrir mesmo assim” documentado na página
