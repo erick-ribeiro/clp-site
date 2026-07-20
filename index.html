@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Clp — Gerenciador de clipboard para macOS</title>
+    <meta
+      name="description"
+      content="Clp é um gerenciador de área de transferência nativo para macOS 26. Histórico local na barra de menus, sem cloud, sem telemetria, sem conta."
+    />
+    <meta name="theme-color" content="#d8e4f0" />
+    <link rel="canonical" href="https://clp.erickribeiro.me/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="Clp" />
+    <meta property="og:title" content="Clp — Clipboard nativo para macOS 26" />
+    <meta
+      property="og:description"
+      content="Histórico local de texto, links, imagens e arquivos. Sem cloud. Sem telemetria. Sem conta."
+    />
+    <meta property="og:url" content="https://clp.erickribeiro.me/" />
+    <meta property="og:image" content="https://clp.erickribeiro.me/assets/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Clp — Clipboard nativo para macOS 26" />
+    <meta
+      name="twitter:description"
+      content="Histórico local na barra de menus. Privacidade total. Open source (MIT)."
+    />
+    <meta name="twitter:image" content="https://clp.erickribeiro.me/assets/og-image.png" />
+
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/favicon.svg" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+    <script>
+      window.CLP_CONFIG = {
+        downloadUrl: "/downloads/Clp-0.1.0.dmg",
+        version: "0.1.0",
+        githubUrl: "https://github.com/erick-ribeiro/clp-app",
+      };
+    </script>
+  </head>
+  <body>
+    <div class="atmosphere" aria-hidden="true">
+      <div class="atmosphere__base"></div>
+      <div class="atmosphere__orb atmosphere__orb--a" data-parallax="0.08"></div>
+      <div class="atmosphere__orb atmosphere__orb--b" data-parallax="0.14"></div>
+      <div class="atmosphere__orb atmosphere__orb--c" data-parallax="0.05"></div>
+      <div class="atmosphere__grain"></div>
+    </div>
+
+    <header class="site-nav">
+      <a class="site-nav__brand" href="#topo" aria-label="Clp — início">Clp</a>
+      <nav class="site-nav__links" aria-label="Seções">
+        <a href="#como-funciona">Como funciona</a>
+        <a href="#privacidade">Privacidade</a>
+        <a href="#instalacao">Instalação</a>
+      </nav>
+      <a class="btn btn--ghost btn--sm" data-download href="#">Baixar</a>
+    </header>
+
+    <main id="topo">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero__copy">
+          <p class="brand-mark">Clp</p>
+          <h1 id="hero-title">Seu clipboard, sempre à mão.</h1>
+          <p class="hero__lede">
+            Histórico local de texto, links, imagens e arquivos — na barra de
+            menus do macOS&nbsp;26, sem Dock e sem nuvem.
+          </p>
+          <div class="hero__actions">
+            <a class="btn btn--primary" data-download href="#">
+              <span class="btn__shine" aria-hidden="true"></span>
+              <span class="btn__label">Baixar Clp <span data-version>0.1.0</span></span>
+            </a>
+            <a
+              class="btn btn--ghost"
+              data-github
+              href="https://github.com/erick-ribeiro/clp-app"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Ver no GitHub
+            </a>
+          </div>
+          <p class="hero__meta">
+            macOS&nbsp;26 · menu bar · MIT · ad-hoc v0
+          </p>
+        </div>
+
+        <div class="hero__stage" aria-hidden="true">
+          <div class="shelf glass-panel glass-panel--shelf" data-animate="shelf">
+            <div class="shelf__chrome">
+              <div class="shelf__search glass-chip glass-chip--interactive">
+                <svg class="shelf__search-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.4" />
+                  <path d="M10.5 10.5L13.5 13.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                </svg>
+                <span>Buscar clips…</span>
+                <kbd>⌘⇧V</kbd>
+              </div>
+              <div class="shelf__tabs">
+                <span class="glass-chip glass-chip--tab is-active">Tudo</span>
+                <span class="glass-chip glass-chip--tab">
+                  <i class="dot" style="--dot:#0A84FF"></i> Links
+                </span>
+                <span class="glass-chip glass-chip--tab">
+                  <i class="dot" style="--dot:#32D74B"></i> Snippets
+                </span>
+                <span class="glass-chip glass-chip--circle" title="Novo board">+</span>
+              </div>
+            </div>
+            <div class="shelf__cards">
+              <article class="clip-card" style="--header:#0A84FF">
+                <header></header>
+                <div class="clip-card__body">
+                  <p>https://clp.erickribeiro.me</p>
+                  <span>Safari · agora</span>
+                </div>
+              </article>
+              <article class="clip-card is-focused" style="--header:#AC8E68">
+                <header></header>
+                <div class="clip-card__body">
+                  <p>Release notes v0.1.0 — histórico local, boards e busca instantânea.</p>
+                  <span>Notes · há 2 min</span>
+                </div>
+                <span class="clip-card__shortcut">1</span>
+              </article>
+              <article class="clip-card clip-card--image" style="--header:#64D2FF">
+                <header></header>
+                <div class="clip-card__body clip-card__body--media">
+                  <div class="clip-card__thumb"></div>
+                  <span>Preview · há 8 min</span>
+                </div>
+              </article>
+              <article class="clip-card" style="--header:#FF9F0A">
+                <header></header>
+                <div class="clip-card__body">
+                  <p>~/Downloads/Clp-0.1.0.dmg</p>
+                  <span>Finder · há 12 min</span>
+                </div>
+              </article>
+              <article class="clip-card" style="--header:#30D5C8">
+                <header></header>
+                <div class="clip-card__body">
+                  <p>sem cloud · sem telemetria · sem conta</p>
+                  <span>TextEdit · há 1 h</span>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="como-funciona" aria-labelledby="how-title">
+        <div class="section__intro">
+          <h2 id="how-title">Como funciona</h2>
+          <p>Três gestos. O resto fica no Mac.</p>
+        </div>
+        <ol class="steps">
+          <li class="glass-chip glass-chip--step" data-animate="rise">
+            <span class="steps__index">1</span>
+            <div>
+              <h3>Copie normalmente</h3>
+              <p>Texto, link, imagem ou arquivo — o Clp registra no histórico local.</p>
+            </div>
+          </li>
+          <li class="glass-chip glass-chip--step" data-animate="rise">
+            <span class="steps__index">2</span>
+            <div>
+              <h3>Abra o painel</h3>
+              <p>
+                <kbd>⌘</kbd><kbd>⇧</kbd><kbd>V</kbd> ou o ícone na barra de menus.
+                Sem ícone no Dock.
+              </p>
+            </div>
+          </li>
+          <li class="glass-chip glass-chip--step" data-animate="rise">
+            <span class="steps__index">3</span>
+            <div>
+              <h3>Busque e cole</h3>
+              <p>Busca instantânea, atalhos 1–9, Enter ou arraste para o destino.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="section section--privacy" id="privacidade" aria-labelledby="privacy-title">
+        <div class="privacy glass-panel" data-animate="rise">
+          <div class="section__intro section__intro--inline">
+            <h2 id="privacy-title">Privacidade de verdade</h2>
+            <p>
+              O histórico vive só no seu Mac. Sem cloud, sem telemetria, sem conta
+              e sem dependências externas.
+            </p>
+          </div>
+          <ul class="privacy__list">
+            <li>
+              <strong>100% local</strong>
+              <span>SwiftData em Application Support — nada sai do dispositivo.</span>
+            </li>
+            <li>
+              <strong>Conteúdo confidencial</strong>
+              <span>Itens transitórios ou marcados como confidenciais são ignorados.</span>
+            </li>
+            <li>
+              <strong>Retenção configurável</strong>
+              <span>24&nbsp;h, 7&nbsp;dias, 30&nbsp;dias ou nunca. Boards não expiram.</span>
+            </li>
+            <li>
+              <strong>Exclusão por app</strong>
+              <span>Ignore bundle IDs em Configurações quando quiser silêncio total.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section" id="instalacao" aria-labelledby="install-title">
+        <div class="section__intro">
+          <h2 id="install-title">Instalação</h2>
+          <p>Leve, nativo e open source sob licença MIT.</p>
+        </div>
+        <div class="install">
+          <div class="glass-chip glass-chip--step" data-animate="rise">
+            <h3>Requisitos</h3>
+            <ul class="install__bullets">
+              <li>macOS&nbsp;26 ou superior</li>
+              <li>Permissão de Acessibilidade para colagem automática</li>
+              <li>Assinatura ad-hoc na v0 (sem notarização)</li>
+            </ul>
+          </div>
+          <div class="glass-chip glass-chip--step" data-animate="rise">
+            <h3>Primeira abertura</h3>
+            <p>
+              Baixe o DMG, arraste o Clp para Aplicativos e abra. Se o macOS
+              bloquear, vá em
+              <strong>Ajustes → Privacidade e Segurança</strong> e escolha
+              <strong>Abrir mesmo assim</strong>.
+            </p>
+          </div>
+          <div class="glass-chip glass-chip--step install__cta" data-animate="rise">
+            <h3>Pronto para usar</h3>
+            <p>Stack: SwiftUI + AppKit + SwiftData. Código aberto no GitHub.</p>
+            <div class="hero__actions">
+              <a class="btn btn--primary" data-download href="#">
+                <span class="btn__shine" aria-hidden="true"></span>
+                <span class="btn__label">Baixar DMG</span>
+              </a>
+              <a
+                class="btn btn--ghost"
+                data-github
+                href="https://github.com/erick-ribeiro/clp-app"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Código-fonte
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-footer__brand">
+        <span class="brand-mark brand-mark--sm">Clp</span>
+        <p>Gerenciador de clipboard nativo para macOS.</p>
+      </div>
+      <div class="site-footer__meta">
+        <a data-github href="https://github.com/erick-ribeiro/clp-app" rel="noopener noreferrer" target="_blank">GitHub</a>
+        <a href="https://github.com/erick-ribeiro/clp-app/blob/master/LICENSE" rel="noopener noreferrer" target="_blank">MIT</a>
+        <span>por <a href="https://github.com/erick-ribeiro" rel="noopener noreferrer" target="_blank">Erick Ribeiro</a></span>
+      </div>
+    </footer>
+
+    <script src="/assets/js/main.js" defer></script>
+  </body>
+</html>
