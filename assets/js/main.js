@@ -1,7 +1,7 @@
 (() => {
   const defaults = {
-    downloadUrl: "/downloads/Clp-0.2.0.dmg",
-    version: "0.2.0",
+    downloadUrl: "/downloads/Clp-0.2.1.dmg",
+    version: "0.2.1",
     githubUrl: "https://github.com/erick-ribeiro/clp-app",
   };
 

@@ -15,7 +15,7 @@ clp-site/
 │   ├── favicon.svg
 │   └── og-image.png
 └── downloads/
-    └── Clp-0.2.0.dmg   # adicione o DMG aqui
+    └── Clp-0.2.1.dmg   # adicione o DMG aqui
 ```
 
 ## Desenvolvimento local
@@ -38,8 +38,8 @@ Em `index.html`, `window.CLP_CONFIG` define o repositório e **fallbacks** (vers
 
 ```js
 window.CLP_CONFIG = {
-  downloadUrl: "https://github.com/erick-ribeiro/clp-app/releases/download/v0.2.0/Clp-0.2.0.dmg",
-  version: "0.2.0",
+  downloadUrl: "https://github.com/erick-ribeiro/clp-app/releases/download/v0.2.1/Clp-0.2.1.dmg",
+  version: "0.2.1",
   githubUrl: "https://github.com/erick-ribeiro/clp-app",
 };
 ```
@@ -51,7 +51,7 @@ Meta OG / Twitter usam `https://clp.erick.page/` como URL canônica.
 ## Incluir o DMG
 
 ```bash
-cp ../clp-app/dist/Clp-0.2.0.dmg ./downloads/Clp-0.2.0.dmg
+cp ../clp-app/dist/Clp-0.2.1.dmg ./downloads/Clp-0.2.1.dmg
 ```
 
 A v0 é ad-hoc (sem notarização). O site avisa sobre **Abrir mesmo assim** em Privacidade e Segurança.
