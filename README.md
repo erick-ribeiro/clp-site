@@ -15,7 +15,7 @@ clp-site/
 │   ├── favicon.svg
 │   └── og-image.png
 └── downloads/
-    └── Clp-0.1.0.dmg   # adicione o DMG aqui
+    └── Clp-0.2.0.dmg   # adicione o DMG aqui
 ```
 
 ## Desenvolvimento local
@@ -34,22 +34,24 @@ Abra `http://localhost:8080`.
 
 ## Configurar download e URLs
 
-Em `index.html`, ajuste `window.CLP_CONFIG`:
+Em `index.html`, `window.CLP_CONFIG` define o repositório e **fallbacks** (versão/URL usadas se a API do GitHub falhar):
 
 ```js
 window.CLP_CONFIG = {
-  downloadUrl: "/downloads/Clp-0.1.0.dmg",
-  version: "0.1.0",
+  downloadUrl: "https://github.com/erick-ribeiro/clp-app/releases/download/v0.2.0/Clp-0.2.0.dmg",
+  version: "0.2.0",
   githubUrl: "https://github.com/erick-ribeiro/clp-app",
 };
 ```
+
+Em runtime, `assets/js/main.js` busca `GET /repos/{owner}/{repo}/releases/latest`, pega o asset `.dmg` e atualiza botões/`[data-version]`. Assim, publicar um novo GitHub Release com o DMG já atualiza o site — sem redeploy.
 
 Meta OG / Twitter usam `https://clp.erick.page/` como URL canônica.
 
 ## Incluir o DMG
 
 ```bash
-cp ../clp-app/dist/Clp-0.1.0.dmg ./downloads/Clp-0.1.0.dmg
+cp ../clp-app/dist/Clp-0.2.0.dmg ./downloads/Clp-0.2.0.dmg
 ```
 
 A v0 é ad-hoc (sem notarização). O site avisa sobre **Abrir mesmo assim** em Privacidade e Segurança.
@@ -121,8 +123,8 @@ server {
 
 ## Checklist pré-lançamento
 
-- [ ] DMG em `downloads/Clp-0.1.0.dmg`
-- [ ] `CLP_CONFIG.downloadUrl` e `version` corretos
+- [ ] GitHub Release publicado com o asset `.dmg`
+- [ ] Fallbacks em `CLP_CONFIG` razoáveis (versão anterior ok)
 - [x] URLs canônicas / OG em `clp.erick.page`
 - [ ] Favicon e `og-image.png` acessíveis publicamente
 - [ ] Teste mobile + desktop (glass e CTAs)

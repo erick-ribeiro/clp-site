@@ -45,8 +45,9 @@
     <link rel="stylesheet" href="/assets/css/styles.css" />
     <script>
       window.CLP_CONFIG = {
-        downloadUrl: "https://github.com/erick-ribeiro/clp-app/releases/download/v0.1.0/Clp-0.1.0.dmg",
-        version: "0.1.0",
+        // Fallbacks usados até o release latest do GitHub responder
+        downloadUrl: "https://github.com/erick-ribeiro/clp-app/releases/download/v0.2.0/Clp-0.2.0.dmg",
+        version: "0.2.0",
         githubUrl: "https://github.com/erick-ribeiro/clp-app",
       };
     </script>
@@ -82,7 +83,7 @@
           <div class="hero__actions">
             <a class="btn btn--primary" data-download href="#">
               <span class="btn__shine" aria-hidden="true"></span>
-              <span class="btn__label">Baixar Clp <span data-version>0.1.0</span></span>
+              <span class="btn__label">Baixar Clp <span data-version>0.2.0</span></span>
             </a>
             <a
               class="btn btn--ghost"
@@ -132,7 +133,7 @@
               <article class="clip-card is-focused" style="--header:#AC8E68">
                 <header></header>
                 <div class="clip-card__body">
-                  <p>Release notes v0.1.0 — histórico local, boards e busca instantânea.</p>
+                  <p>Release notes v<span data-version>0.2.0</span> — histórico local, boards e busca instantânea.</p>
                   <span>Notes · há 2 min</span>
                 </div>
                 <span class="clip-card__shortcut">1</span>
@@ -147,7 +148,7 @@
               <article class="clip-card" style="--header:#FF9F0A">
                 <header></header>
                 <div class="clip-card__body">
-                  <p>~/Downloads/Clp-0.1.0.dmg</p>
+                  <p data-dmg-name>~/Downloads/Clp-0.2.0.dmg</p>
                   <span>Finder · há 12 min</span>
                 </div>
               </article>
