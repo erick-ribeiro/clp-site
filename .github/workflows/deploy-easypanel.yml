@@ -1,0 +1,26 @@
+name: Deploy EasyPanel
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-easypanel
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger EasyPanel deploy webhook
+        env:
+          WEBHOOK_URL: ${{ secrets.EASYPANEL_DEPLOY_WEBHOOK }}
+        run: |
+          if [ -z "$WEBHOOK_URL" ]; then
+            echo "Secret EASYPANEL_DEPLOY_WEBHOOK não configurado." >&2
+            exit 1
+          fi
+          curl -fsS -X POST "$WEBHOOK_URL"
+          echo
+          echo "Deploy disparado no EasyPanel."

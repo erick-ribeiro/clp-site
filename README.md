@@ -58,7 +58,23 @@ A v0 é ad-hoc (sem notarização). O site avisa sobre **Abrir mesmo assim** em 
 
 ## Deploy
 
-O site é 100% estático: publique a pasta raiz.
+O site é 100% estático (nginx via `Dockerfile`): publique a pasta raiz ou deixe o EasyPanel buildar a imagem.
+
+### EasyPanel (VPS)
+
+O serviço deve apontar para este repositório (`main`) e usar o `Dockerfile` na raiz.
+
+**Opção A — Auto Deploy nativo:** no EasyPanel, ative *Auto Deploy* no serviço. Ele cria o webhook no GitHub e redeploya a cada push.
+
+**Opção B — GitHub Action (este repo):** em cada push na `main`, a Action chama o *Deploy Webhook* do EasyPanel.
+
+1. No EasyPanel, abra o serviço → copie a URL de **Deploy Webhook** / *Deployment Trigger* (algo como `https://seu-painel/api/deploy/<token>`).
+2. No GitHub: **Settings → Secrets and variables → Actions → New repository secret**
+   - Name: `EASYPANEL_DEPLOY_WEBHOOK`
+   - Value: a URL completa do webhook
+3. Faça push na `main` (ou rode o workflow *Deploy EasyPanel* manualmente em Actions).
+
+Não cole o token no código — só no secret do GitHub.
 
 ### Cloudflare Pages
 
@@ -132,4 +148,8 @@ server {
 
 ## Licença
 
-O site acompanha o app Clp (MIT). Textos e assets desta pasta: MIT.
+Distribuído sob a licença [MIT](LICENSE).
+
+## Contribuindo
+
+Veja [CONTRIBUTING.md](CONTRIBUTING.md).
