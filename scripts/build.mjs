@@ -1,4 +1,4 @@
-import { cp, mkdir, readdir, readFile, rm, stat } from "node:fs/promises";
+import { cp, mkdir, readdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -10,6 +10,7 @@ const MAX_BYTES = 25 * 1024 * 1024;
 
 const required = [
   "index.html",
+  "404.html",
   "assets/css/styles.css",
   "assets/js/main.js",
   "assets/favicon.svg",
@@ -83,22 +84,43 @@ await rm(dist, { recursive: true, force: true });
 await mkdir(dist, { recursive: true });
 
 await copyFile(path.join(root, "index.html"), path.join(dist, "index.html"));
+await copyFile(path.join(root, "404.html"), path.join(dist, "404.html"));
 await cp(path.join(root, "assets"), path.join(dist, "assets"), {
   recursive: true,
   verbatimSymlinks: false,
 });
-await copyFile(path.join(root, "_headers"), path.join(dist, "_headers"));
 
+const headerSource = await readFile(path.join(root, "_headers"), "utf8");
+if (/^\/downloads\/\*/m.test(headerSource)) {
+  fail(
+    "_headers não pode usar /downloads/*: o Content-Disposition vazaria para a página 404 quando o arquivo não existe"
+  );
+}
+
+const downloadNames = [];
 const downloadEntries = await readdir(path.join(root, "downloads"), {
   withFileTypes: true,
 });
 for (const entry of downloadEntries) {
   if (entry.name === "README.md" || entry.name.startsWith(".")) continue;
+  if (!entry.isFile()) {
+    fail(`downloads/${entry.name} precisa ser um arquivo`);
+    continue;
+  }
+  downloadNames.push(entry.name);
   await copyFile(
     path.join(root, "downloads", entry.name),
     path.join(dist, "downloads", entry.name)
   );
 }
+
+const downloadRules = downloadNames
+  .map((name) => `/downloads/${name}\n  Content-Disposition: attachment`)
+  .join("\n\n");
+const headersOut = `${headerSource.trimEnd()}${
+  downloadRules ? `\n\n${downloadRules}\n` : "\n"
+}`;
+await writeFile(path.join(dist, "_headers"), headersOut);
 
 const files = (await walk(dist)).sort();
 
@@ -128,11 +150,28 @@ const headers = await readFile(path.join(dist, "_headers"), "utf8");
 for (const needle of [
   "/assets/*",
   "Cache-Control: public, max-age=3600, must-revalidate",
-  "/downloads/*",
-  "Content-Disposition: attachment",
   "X-Robots-Tag: noindex",
 ]) {
   if (!headers.includes(needle)) fail(`_headers sem ${needle}`);
+}
+if (/^\/downloads\/\*/m.test(headers)) {
+  fail("dist/_headers ainda tem o curinga /downloads/*");
+}
+for (const name of downloadNames) {
+  const rule = `/downloads/${name}\n  Content-Disposition: attachment`;
+  if (!headers.includes(rule)) fail(`dist/_headers sem regra para ${name}`);
+}
+
+const notFound = await readFile(path.join(dist, "404.html"), "utf8");
+if (!notFound.includes("Página não encontrada")) {
+  fail("404.html perdeu o título da página");
+}
+if (!notFound.includes('href="/"')) fail("404.html sem link para a home");
+const notFoundRefs = [
+  ...notFound.matchAll(/(?:href|src)="(\/[^"?#]+)"/g),
+].map((match) => match[1].replace(/^\//, ""));
+for (const ref of notFoundRefs) {
+  if (!files.includes(ref)) fail(`404.html aponta para /${ref}, ausente no output`);
 }
 
 const css = await readFile(path.join(dist, "assets/css/styles.css"), "utf8");
