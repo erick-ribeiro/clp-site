@@ -537,6 +537,15 @@ kbd {
   max-width: 16ch;
 }
 
+.not-found {
+  justify-content: center;
+  padding-bottom: clamp(2rem, 5vh, 3.5rem);
+}
+
+.not-found h1 {
+  max-width: 12ch;
+}
+
 .hero__lede {
   max-width: 34ch;
   font-size: clamp(1.05rem, 2vw, 1.2rem);

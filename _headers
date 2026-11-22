@@ -2,9 +2,8 @@
 /assets/*
   Cache-Control: public, max-age=3600, must-revalidate
 
-# DMG servido da pasta downloads/, se um artefato local existir no build.
-/downloads/*
-  Content-Disposition: attachment
+# Content-Disposition de /downloads/ é gerado no build, um arquivo por vez.
+# Um curinga /downloads/* também gruda no 404 quando o arquivo não existe.
 
 # Não indexar hostnames de preview. clp.erick.page fica de fora destes padrões.
 https://:version.:subdomain.workers.dev/*

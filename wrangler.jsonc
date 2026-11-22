@@ -6,6 +6,9 @@
   // Sem routes de propósito: o deploy sobe só em *.workers.dev
   // e não cria nem altera DNS de clp.erick.page.
   "workers_dev": true,
+  // Explícito para o Wrangler não avisar que o padrão pode mudar.
+  // Acompanha workers_dev: previews ficam ligados, sem rota nova.
+  "preview_urls": true,
   "observability": {
     "enabled": true,
     "logs": {
@@ -20,10 +23,10 @@
   "assets": {
     "directory": "./dist",
     "html_handling": "auto-trailing-slash",
-    "not_found_handling": "single-page-application"
+    "not_found_handling": "404-page"
   },
   "build": {
     "command": "node scripts/build.mjs",
-    "watch_dir": ["index.html", "assets", "downloads", "_headers", "scripts"]
+    "watch_dir": ["index.html", "404.html", "assets", "downloads", "_headers", "scripts"]
   }
 }

@@ -35,7 +35,7 @@ npx --yes serve -l 8080
 
 Abra `http://localhost:8080`.
 
-Para ver o mesmo output que a Cloudflare serve, com fallback de `index.html` e os headers de `_headers`:
+Para ver o mesmo output que a Cloudflare serve, com a página 404 e os headers de `_headers`:
 
 ```bash
 npm ci
@@ -74,9 +74,9 @@ O site em produção continua na VPS (nginx via `Dockerfile` / EasyPanel) até a
 
 ### Cloudflare (plano gratuito)
 
-Caminho recomendado: [Workers Static Assets](https://developers.cloudflare.com/workers/static-assets/), sem script de aplicação. O plano gratuito cobre este site: poucos arquivos, cada um abaixo de 25 MiB e do teto de 20.000 arquivos por versão. Pedido que serve arquivo estático é gratuito e ilimitado; a config não usa `run_worker_first`. URL desconhecida devolve `index.html`, no mesmo espírito do `try_files` do nginx.
+Caminho recomendado: [Workers Static Assets](https://developers.cloudflare.com/workers/static-assets/), sem script de aplicação. O plano gratuito cobre este site: poucos arquivos, cada um abaixo de 25 MiB e do teto de 20.000 arquivos por versão. Pedido que serve arquivo estático é gratuito e ilimitado; a config não usa `run_worker_first`. URL desconhecida devolve `404.html` com status 404, no Workers e no nginx.
 
-`npm run build` gera `dist/` com `index.html`, `assets/`, `_headers` e, se existir, o DMG em `downloads/`. Ficam de fora Dockerfile, nginx, docs e qualquer arquivo que pareça segredo. O build falha se um arquivo passar de 25 MiB — nesse caso o DMG continua no GitHub Release, que já é o URL usado por `CLP_CONFIG`.
+`npm run build` gera `dist/` com `index.html`, `404.html`, `assets/`, `_headers` e, se existir, o DMG em `downloads/`. O `Content-Disposition: attachment` só entra na regra do arquivo que realmente foi copiado. Ficam de fora Dockerfile, nginx, docs e qualquer arquivo que pareça segredo. O build falha se um arquivo passar de 25 MiB — nesse caso o DMG continua no GitHub Release, que já é o URL usado por `CLP_CONFIG`.
 
 Não há token, `account_id` nem rota neste repositório. Autentique o Wrangler na sua máquina (`npx wrangler login`) ou guarde o API token só no painel da Cloudflare / no secret do CI, nunca no git.
 
@@ -172,11 +172,18 @@ server {
   root /var/www/clp-site;
   index index.html;
 
+  error_page 404 =404 /404.html;
+
   location / {
-    try_files $uri $uri/ /index.html;
+    try_files $uri $uri/ =404;
+  }
+
+  location = /404.html {
+    internal;
   }
 
   location /downloads/ {
+    try_files $uri =404;
     add_header Content-Disposition "attachment";
   }
 }
