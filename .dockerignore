@@ -4,3 +4,15 @@
 Dockerfile
 README.md
 downloads/README.md
+
+node_modules
+dist
+.wrangler
+.dev.vars
+.env
+.env.*
+package.json
+package-lock.json
+wrangler.jsonc
+scripts
+_headers

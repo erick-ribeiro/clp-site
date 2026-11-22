@@ -1,0 +1,16 @@
+{
+  "name": "clp-site",
+  "private": true,
+  "description": "Site estático do Clp, publicado como Workers Static Assets.",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "preview": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "wrangler": "^4.166.0"
+  }
+}

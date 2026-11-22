@@ -2,7 +2,7 @@
 
 Site one-page de marketing e download do [Clp](https://github.com/erick-ribeiro/clp-app) — gerenciador de clipboard nativo para macOS 26.
 
-Stack: HTML + CSS + JS estático. Sem build step.
+Stack: HTML + CSS + JS estático. `npm run build` só monta a pasta `dist/` para a Cloudflare; não transpila nada.
 
 ## Estrutura
 
@@ -14,8 +14,11 @@ clp-site/
 │   ├── js/main.js
 │   ├── favicon.svg
 │   └── og-image.png
-└── downloads/
-    └── Clp-0.2.1.dmg   # adicione o DMG aqui
+├── downloads/
+│   └── Clp-0.2.1.dmg   # adicione o DMG aqui
+├── _headers            # cache e Content-Disposition no edge
+├── wrangler.jsonc      # Workers Static Assets, sem domínio custom
+└── scripts/build.mjs   # gera dist/
 ```
 
 ## Desenvolvimento local
@@ -31,6 +34,15 @@ npx --yes serve -l 8080
 ```
 
 Abra `http://localhost:8080`.
+
+Para ver o mesmo output que a Cloudflare serve, com fallback de `index.html` e os headers de `_headers`:
+
+```bash
+npm ci
+npm run preview
+```
+
+O preview sobe em `http://localhost:8787` e não publica nada.
 
 ## Configurar download e URLs
 
@@ -58,7 +70,53 @@ A v0 é ad-hoc (sem notarização). O site avisa sobre **Abrir mesmo assim** em 
 
 ## Deploy
 
-O site é 100% estático (nginx via `Dockerfile`): publique a pasta raiz ou deixe o EasyPanel buildar a imagem.
+O site em produção continua na VPS (nginx via `Dockerfile` / EasyPanel) até a virada de DNS, prevista antes de 02/12/2026. A config da Cloudflare não declara domínio: um deploy sobe só o hostname `*.workers.dev` e não mexe em `clp.erick.page`.
+
+### Cloudflare (plano gratuito)
+
+Caminho recomendado: [Workers Static Assets](https://developers.cloudflare.com/workers/static-assets/), sem script de aplicação. O plano gratuito cobre este site: poucos arquivos, cada um abaixo de 25 MiB e do teto de 20.000 arquivos por versão. Pedido que serve arquivo estático é gratuito e ilimitado; a config não usa `run_worker_first`. URL desconhecida devolve `index.html`, no mesmo espírito do `try_files` do nginx.
+
+`npm run build` gera `dist/` com `index.html`, `assets/`, `_headers` e, se existir, o DMG em `downloads/`. Ficam de fora Dockerfile, nginx, docs e qualquer arquivo que pareça segredo. O build falha se um arquivo passar de 25 MiB — nesse caso o DMG continua no GitHub Release, que já é o URL usado por `CLP_CONFIG`.
+
+Não há token, `account_id` nem rota neste repositório. Autentique o Wrangler na sua máquina (`npx wrangler login`) ou guarde o API token só no painel da Cloudflare / no secret do CI, nunca no git.
+
+#### Workers Builds
+
+1. No painel: **Workers & Pages → Create → Workers → Connect to Git** e escolha este repositório.
+2. Branch de produção: `main`.
+3. Build command: `npm run build`
+4. Deploy command: `npx wrangler deploy`
+5. Não adicione custom domain ainda.
+
+O primeiro deploy pode pedir a criação do subdomínio `workers.dev` no painel. Isso não altera o DNS de `erick.page`. Confira o site em `https://clp-site.<sua-subdomain>.workers.dev` antes de qualquer corte.
+
+#### Wrangler, na sua máquina
+
+```bash
+npm ci
+npx wrangler login
+npm run deploy
+```
+
+`npm run deploy` roda o build e publica o Worker. Sem `routes` no `wrangler.jsonc`, o destino é só `*.workers.dev`.
+
+#### Pages, se preferir
+
+O mesmo `dist/` serve para Pages. No projeto Pages:
+
+- Build command: `npm run build`
+- Build output directory: `dist`
+- Root directory: `/`
+
+Não conecte o mesmo repositório nos dois produtos ao mesmo tempo.
+
+#### Virada do domínio (manual, depois da validação)
+
+Faça isto só quando o hostname novo estiver conferido, e antes de desligar a VPS em 02/12/2026. Este passo muda DNS; não está na config do repo de propósito.
+
+- Se `erick.page` já estiver na mesma conta Cloudflare: no Worker, **Settings → Domains & Routes → Add → Custom Domain** e informe `clp.erick.page`. A Cloudflare cria o registro. Não coloque essa rota no `wrangler.jsonc` sem querer repetir a mudança em todo deploy.
+- Se o DNS continuar no provedor atual: aponte um CNAME de `clp` para `clp-site.<sua-subdomain>.workers.dev` (ou para o hostname `pages.dev`, se tiver usado Pages).
+- Quando `https://clp.erick.page/` responder pela Cloudflare, desative o Auto Deploy do EasyPanel e o secret `EASYPANEL_DEPLOY_WEBHOOK` pode ser removido.
 
 ### EasyPanel (VPS)
 
@@ -75,19 +133,6 @@ O serviço deve apontar para este repositório (`main`) e usar o `Dockerfile` na
 3. Faça push na `main` (ou rode o workflow *Deploy EasyPanel* manualmente em Actions).
 
 Não cole o token no código — só no secret do GitHub.
-
-### Cloudflare Pages
-
-1. Conecte o repositório ou faça upload direto.
-2. Build command: *(vazio)*
-3. Output directory: `/` (raiz)
-4. Em Custom domain, aponte o domínio desejado.
-
-Via Wrangler:
-
-```bash
-npx wrangler pages deploy . --project-name=clp-site
-```
 
 ### GitHub Pages
 

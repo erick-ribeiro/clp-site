@@ -15,8 +15,10 @@ Obrigado por contribuir. Este repositório é o site estático de marketing e do
 4. Valide localmente:
    ```bash
    python3 -m http.server 8080
+   npm ci
+   npm run build
    ```
-   Abra `http://localhost:8080` e confira desktop/mobile.
+   Abra `http://localhost:8080` e confira desktop/mobile. `npm run build` precisa terminar com `dist/ ok`.
 5. Abra um pull request descrevendo o problema e a solução.
 
 Não envie commits diretamente para `main`. A branch padrão é protegida e mudanças entram por PR.
