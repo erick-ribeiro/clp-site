@@ -1,0 +1,17 @@
+# Mesma janela de cache do nginx para CSS, JS e imagens.
+/assets/*
+  Cache-Control: public, max-age=3600, must-revalidate
+
+# DMG servido da pasta downloads/, se um artefato local existir no build.
+/downloads/*
+  Content-Disposition: attachment
+
+# Não indexar hostnames de preview. clp.erick.page fica de fora destes padrões.
+https://:version.:subdomain.workers.dev/*
+  X-Robots-Tag: noindex
+
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+
+https://:version.:project.pages.dev/*
+  X-Robots-Tag: noindex
